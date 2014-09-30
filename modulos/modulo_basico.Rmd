@@ -1,0 +1,166 @@
+---
+title: "Módulo Básico"
+author: "IME - USP"
+date: "29 de setembro de 2014"
+output:
+  pdf_document:
+    fig_caption: yes
+    highlight: pygments
+    number_sections: yes
+    toc: yes
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    theme: readable
+    toc: yes
+---
+
+```{r configuracoes, echo=FALSE, message=FALSE, warning=FALSE}
+library(magrittr) # para operador %>%
+library(pander) # para tabelas em rmarkdown
+library(ProgGUIinR) # para LoremIpsum
+
+panderOptions("table.style", "rmarkdown")
+panderOptions("table.caption.prefix", "Tabela: ")
+panderOptions("table.split.table", Inf)
+```
+
+# A FAZER***********
+
+- Tudo.
+
+# Introdução à linguagem *script*
+
+`r LoremIpsum`
+
+# Sintaxe
+
+## Operadores Aritméticos
+
+Operadores são funções representadas por símbolos reservados que geralmente são construídos com o intuito de fazer a linguagem mais semelhante às notações matemáticas convencionais. Exemplos de operadores são os aritméticos, como `-`, `+`, `/` e `*`, (que falaremos a seguir). Estes operadore se dividem em duas classes: os unários, que operam em apenas um objeto; e os binários, que relacionam dois objetos.
+
+
+```{r, echo=FALSE, results='asis'}
+op_aritmetico <- data.frame(Operador = c("x + y", 
+                                         "x - y", 
+                                         "x * y", 
+                                         "x / y", 
+                                         "x^y ou x ** y", 
+                                         "x %% y", 
+                                         "x %/% y"),
+                            Descrição = c("Adição de x com y", 
+                                          "Subtração de y em x", 
+                                          "Multiplicação de x e y", 
+                                          "Divisão de x por y", 
+                                          "x elevado a y-ésima potência", 
+                                          "Resto da divisão de x por y (módulo)", 
+                                          "Parte inteira da divisão de x por y")) 
+op_aritmetico %>% pander(caption = "Lista de operadores aritméticos")
+```
+
+*Exemplos:*
+
+```{r}
+1 + 1
+10 - 8
+2*10
+18/3
+2^4
+9%%2
+9%/%2
+```
+
+## Operadores Lógicos
+
+Operadores lógicos retornarão sempre ou `TRUE` ou `FALSE`, conhecidos também como valores **booleanos**. Eles definem perguntas que aceitam apenas verdadeiro e falso como resposta, como sugere o quadro abaixo.
+
+ 
+```{r, echo=FALSE, results='asis'}
+op_logico <- data.frame(Operador = c("x < y", 
+                                     "x <= y", 
+                                     "x > y", 
+                                     "x >= y", 
+                                     "x == y", 
+                                     "x != y", 
+                                     "!x", 
+                                     "x \\| y ", 
+                                     "x & y"),
+                        Descrição = c("x menor que y?", 
+                                      "x menor ou igual a y?", 
+                                      "x maior que y?", 
+                                      "x maior ou igual a y?", 
+                                      "x igual a y?", 
+                                      "x diferente de y?", 
+                                      "Negativa de x", 
+                                      "x ou y são verdadeiros?", 
+                                      "x e y são verdadeiros?"))
+op_logico %>% pander(caption = "Lista de operadores lógicos")
+```
+
+Os operadores `<`, `>`, `<=`, `>=`, `!=`, `==` são usados tanto na matemática quanto em programação e bastante intuitivos. Eles retornarão `TRUE` ou `FALSE` (como bons operadores lógicos) dependendo da veracidade da sentença. Ou seja, se dissermos ao R que `1 != 1` ele prontamente negará tal absurdo retornado `FALSE` como resposta. Abaixo seguem alguns exemplos de testes lógicos entre dois objetos:
+
+```{r}
+1 < 1
+1 <= 1
+c(9, 10) >= 9
+1 == 0.999
+1 != 0.99999999999999999
+"tudo minúsculo" == "TUDO MAIÚSCULO"
+"tudo minúsculo" == "tudo minúsculo"
+```
+
+Muitas vezes precisamos combinarmos diversos testes para tomar uma única decisão. Por exemplo, se quisermos certificar que um valor `x` é um número no intervalo unitário, precisamos saber se `x > 0` e se `x < 1` simultaneamente. Para esse tipo de situação, os operadores `|` (OU) e `&` (E) vêm a calhar. Diferentemente dos operadores visto acima, os valores que eles recebem também devem ser booleanos, ou seja, deve ser passado `TRUE` ou `FALSE` em ambos os lados do operador. Assim, o R entenderia o que gostaríamos de testar para o x com a sentença `x > 0 & x < 1` (em português, lê-se: x é maior que zero E x é menor que 1). Neste caso, se as duas condições forem satisfeitas, então o R retornará `TRUE`.
+
+Para entender melhor
+
+Combinando vários testes lógicos:
+
+```{r}
+!TRUE
+TRUE | FALSE
+FALSE | FALSE
+TRUE & FALSE
+TRUE & TRUE
+(1 == 1 | 2 > 3 | 100 == 0 | "a" != "b") & (4 < 5 | 3 > 0)
+```
+
+## Operadores diversos
+
+```{r, echo=FALSE, results='asis'}
+op_diversos <- data.frame(Operador = c("x : y", 
+                                       "x = y", 
+                                       "?x", 
+                                       "x$y", 
+                                       "x %\\*% y"),
+                          Descrição = c("Sequência de x até y", 
+                                        "x recebe y (atribuição)", 
+                                        "Documentação de x", 
+                                        "Extração de y do objeto x", 
+                                        "Multiplicação matricial das matrizes x e y"))
+op_diversos %>% pander(caption = "Lista de operadores diversos")
+```
+
+## Precedência de operadores
+
+Assim como na matemática, operadores têm ordem para serem efetuados, tal como `*` antes de `+`.
+
+## Controle de fluxo
+
+Como em toda boa linguagem de programação, o R possui seus dispositivos para controle de fluxo. Entende-se por controle de fluxo o conjunto de funções e operadores responsáveis por introduzir condições, com a finalidade de decidir como proceder durante uma execução. Um caso típico é quando queremos que o programa faça *X* se *A* acontecer ou faça *Y* se A **não** acontecer. 
+
+### `if`, `else` e `else if`
+
+### switch
+
+### Laços
+
+#### `while`
+
+#### `for`
+
+#### `repeat`
+
+#### `break` e `next`
+
+
+
