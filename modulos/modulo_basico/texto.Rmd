@@ -18,7 +18,7 @@ output:
 ```{r configuracoes, echo=FALSE, message=FALSE, warning=FALSE}
 library(magrittr) # para operador %>%
 library(pander) # para tabelas em rmarkdown
-library(ProgGUIinR) # para LoremIpsum
+library(ProgGUIinR) # para LoremIpsum 
 
 panderOptions("table.style", "rmarkdown")
 panderOptions("table.caption.prefix", "Tabela: ")
@@ -149,6 +149,30 @@ Assim como na matemática, operadores têm ordem para serem efetuados, tal como `*
 Como em toda boa linguagem de programação, o R possui seus dispositivos para controle de fluxo. Entende-se por controle de fluxo o conjunto de funções e operadores responsáveis por introduzir condições, com a finalidade de decidir como proceder durante uma execução. Um caso típico é quando queremos que o programa faça *X* se *A* acontecer ou faça *Y* se A **não** acontecer. 
 
 ### `if`, `else` e `else if`
+
+```{r ifelse}
+x <- 3
+if(x == 3) {
+  print(x)
+} else {
+  print(x + 1)
+}
+print(ifelse(x == 3, x, x + 1))
+```
+
+Cuidado! Numa sentença `if {...} else {...}`, você não pode pular uma linha para colocar o `else`, após o `}`. A explicação dessa característica do R tem tudo a ver com a ideia de que, no R, todos os objetos são funções.
+
+```{r ifelse_notrun, eval=FALSE}
+## NOT RUN
+x <- 3
+if(x == 3) {
+  print(x)
+} 
+else {
+  print(x + 1)
+}
+```
+
 
 ### switch
 
